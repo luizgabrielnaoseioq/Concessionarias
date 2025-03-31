@@ -3,43 +3,76 @@ package com.concessionaria.services;
 import com.concessionaria.dtos.CidadeDTO;
 import com.concessionaria.models.Cidade;
 import com.concessionaria.repositories.CidadeRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CidadeService {
+
     @Autowired
     private CidadeRepository cidadeRepository;
 
-    public CidadeDTO salvarCidade(CidadeDTO cidadeDTO) {
-        com.concessionaria.models.Cidade cidade = new com.concessionaria.models.Cidade(cidadeDTO);
-        return new CidadeDTO(cidadeRepository.save(cidade));
+    public List<CidadeDTO> findAll() {
+
+        List<Cidade> cidades = cidadeRepository.findAll();
+
+        return cidades.stream().map(CidadeService::toDTO).toList(); // Converte para DTO
     }
 
-    public List<CidadeDTO> buscarTodos(){
-        return cidadeRepository.findAll().stream().map(cidade -> new CidadeDTO(cidade)).toList();
+    // Buscar cidade por ID
+    public CidadeDTO findById(@PathVariable Long id) {
+
+        Cidade cidade = cidadeRepository.findById(id).get();
+        return toDTO(cidade);
     }
 
-    public Cidade buscarCidadePorCep(String cep) {
-        return cidadeRepository.findByCep(cep).orElseThrow(() -> new IllegalArgumentException("Cidade não encontrada"));
+    // Atualizar cidade por ID
+    @Transactional
+    public CidadeDTO update(CidadeDTO cidadeDTO) {
+
+        Cidade cidade = cidadeRepository.findById(cidadeDTO.getId()).get();
+
+        cidade.setNome(cidadeDTO.getNome());
+        cidade.setCep(cidadeDTO.getCep());
+
+        cidadeRepository.save(cidade);
+
+        return findById(cidadeDTO.getId());
     }
 
-    public CidadeDTO atualizarCidade(CidadeDTO cidadeDTO) {
-        if (cidadeDTO.getId() == null) {
-            throw new IllegalArgumentException("campo Id não informado");
-        }
-        Cidade cidade = cidadeRepository.findById(cidadeDTO.getId()).orElseThrow(() -> new IllegalArgumentException("Cidade não encontrada"));
-        cidade = new Cidade(cidadeDTO);
-        cidade = cidadeRepository.save(cidade);
-        return new CidadeDTO(cidade);
+    // Buscar cidades pelo nome
+    public List<CidadeDTO> findByNome(String nome) {
+        Optional<Cidade> cidades = cidadeRepository.findByNome(nome);
+        return cidades.stream().map(CidadeService::toDTO).toList(); // Converte para DTO
     }
-    public void deletarCidade(Long id) {
+
+    // Criar ou atualizar uma cidade
+    @Transactional
+    public CidadeDTO save(CidadeDTO cidadeDTO) {
+
+        Cidade cidade = cidadeRepository.save(toEntity(cidadeDTO));
+        return toDTO(cidade);
+    }
+
+    // Deletar cidade pelo ID
+    @Transactional
+    public void deleteById(Long id) {
         cidadeRepository.deleteById(id);
     }
 
-    public CidadeDTO toEntity(Cidade cidade) {
-        return new CidadeDTO(cidade);
+    // Converter para o DTO
+    // Converte Entidade para DTO
+    public static CidadeDTO toDTO(Cidade cidade) {
+        return new CidadeDTO(cidade.getId(), cidade.getNome(), cidade.getCep());
+    }
+
+    // Converte DTO para Entidade
+    public static Cidade toEntity(CidadeDTO cidadeDTO) {
+        return new Cidade(cidadeDTO.getId(), cidadeDTO.getNome(), cidadeDTO.getCep());
     }
 }

@@ -6,19 +6,10 @@ import lombok.Data;
 @Data
 public class CidadeDTO {
 
-    private String estado;
+    private Long id;
     private String nome;
     private String cep;
-    private Boolean isVerificado;
 
-    public CidadeDTO() {}
-
-    public CidadeDTO(Cidade cidade) {
-        this.id = cidade.getId();
-        this.estado = cidade.getEstado();
-        this.nome = cidade.getNome();
-        this.cep = cidade.getCep();
-        this.isVerificado = cidade.getIsVerificado();
+    public CidadeDTO(Long id, String nome, String cep) {
     }
-
 }
