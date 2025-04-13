@@ -1,8 +1,10 @@
 package com.concessionaria.dtos;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class VeiculoDTO {
 
     private Long id;
@@ -10,6 +12,10 @@ public class VeiculoDTO {
     private String marca;
     private int ano;
     private double preco;
+
+    public VeiculoDTO() {
+
+    }
 
     public VeiculoDTO(Long id, String modelo, String marca, int ano, double preco) {
         this.id = id;

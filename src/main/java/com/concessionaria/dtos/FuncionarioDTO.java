@@ -1,16 +1,25 @@
 package com.concessionaria.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
 public class FuncionarioDTO {
     private Long id;
     private String nome;
     private String cargo;
     private double salario;
     private Long concessionariaId;
+
+    public FuncionarioDTO() {
+
+    }
+
+    public FuncionarioDTO(Long id, String nome, String cargo, double salario, Long concessionariaId) {
+        this.id = id;
+        this.nome = nome;
+        this.cargo = cargo;
+        this.salario = salario;
+        this.concessionariaId = concessionariaId;
+    }
 }

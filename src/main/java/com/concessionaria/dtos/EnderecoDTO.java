@@ -1,8 +1,10 @@
 package com.concessionaria.dtos;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
+@Getter
+@Setter
 public class EnderecoDTO {
 
     private Long id;
