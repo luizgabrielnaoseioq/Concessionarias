@@ -15,6 +15,14 @@ public class EnderecoService {
     @Autowired
     private EnderecoRepository enderecoRepository;
 
+    public static EnderecoDTO toDTO(Endereco e) {
+        return new EnderecoDTO(e.getId(), e.getRua(), e.getNumero(), e.getBairro(), e.getCidade());
+    }
+
+    public static Endereco toEntity(EnderecoDTO dto) {
+        return new Endereco(dto.getId(), dto.getRua(), dto.getNumero(), dto.getBairro(), dto.getCidade());
+    }
+
     public List<EnderecoDTO> findAll() {
         return enderecoRepository.findAll().stream().map(EnderecoService::toDTO).toList();
     }
@@ -44,13 +52,5 @@ public class EnderecoService {
     @Transactional
     public void deleteById(Long id) {
         enderecoRepository.deleteById(id);
-    }
-
-    public static EnderecoDTO toDTO(Endereco e) {
-        return new EnderecoDTO(e.getId(), e.getRua(), e.getNumero(), e.getBairro(), e.getCidade());
-    }
-
-    public static Endereco toEntity(EnderecoDTO dto) {
-        return new Endereco(dto.getId(), dto.getRua(), dto.getNumero(), dto.getBairro(), dto.getCidade());
     }
 }

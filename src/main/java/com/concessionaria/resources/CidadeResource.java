@@ -1,7 +1,6 @@
 package com.concessionaria.resources;
 
 import com.concessionaria.dtos.CidadeDTO;
-
 import com.concessionaria.services.CidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

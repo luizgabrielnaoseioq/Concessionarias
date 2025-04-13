@@ -1,6 +1,5 @@
 package com.concessionaria.dtos;
 
-import com.concessionaria.models.Cidade;
 import lombok.Data;
 
 @Data

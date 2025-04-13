@@ -15,6 +15,14 @@ public class VeiculoService {
     @Autowired
     private VeiculoRepository veiculoRepository;
 
+    public static VeiculoDTO toDTO(Veiculo v) {
+        return new VeiculoDTO(v.getId(), v.getModelo(), v.getMarca(), v.getAno(), v.getPreco());
+    }
+
+    public static Veiculo toEntity(VeiculoDTO dto) {
+        return new Veiculo(dto.getId(), dto.getModelo(), dto.getMarca(), dto.getAno(), dto.getPreco());
+    }
+
     public List<VeiculoDTO> findAll() {
         return veiculoRepository.findAll().stream().map(VeiculoService::toDTO).toList();
     }
@@ -44,13 +52,5 @@ public class VeiculoService {
     @Transactional
     public void deleteById(Long id) {
         veiculoRepository.deleteById(id);
-    }
-
-    public static VeiculoDTO toDTO(Veiculo v) {
-        return new VeiculoDTO(v.getId(), v.getModelo(), v.getMarca(), v.getAno(), v.getPreco());
-    }
-
-    public static Veiculo toEntity(VeiculoDTO dto) {
-        return new Veiculo(dto.getId(), dto.getModelo(), dto.getMarca(), dto.getAno(), dto.getPreco());
     }
 }

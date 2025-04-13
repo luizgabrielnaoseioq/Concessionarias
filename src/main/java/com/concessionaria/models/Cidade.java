@@ -1,10 +1,6 @@
 package com.concessionaria.models;
 
-import com.concessionaria.dtos.CidadeDTO;
 import jakarta.persistence.*;
-import lombok.Data;
-
-import java.util.Objects;
 
 
 @Entity

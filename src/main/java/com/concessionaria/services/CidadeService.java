@@ -17,6 +17,17 @@ public class CidadeService {
     @Autowired
     private CidadeRepository cidadeRepository;
 
+    // Converter para o DTO
+    // Converte Entidade para DTO
+    public static CidadeDTO toDTO(Cidade cidade) {
+        return new CidadeDTO(cidade.getId(), cidade.getNome(), cidade.getCep());
+    }
+
+    // Converte DTO para Entidade
+    public static Cidade toEntity(CidadeDTO cidadeDTO) {
+        return new Cidade(cidadeDTO.getId(), cidadeDTO.getNome(), cidadeDTO.getCep());
+    }
+
     public List<CidadeDTO> findAll() {
 
         List<Cidade> cidades = cidadeRepository.findAll();
@@ -63,16 +74,5 @@ public class CidadeService {
     @Transactional
     public void deleteById(Long id) {
         cidadeRepository.deleteById(id);
-    }
-
-    // Converter para o DTO
-    // Converte Entidade para DTO
-    public static CidadeDTO toDTO(Cidade cidade) {
-        return new CidadeDTO(cidade.getId(), cidade.getNome(), cidade.getCep());
-    }
-
-    // Converte DTO para Entidade
-    public static Cidade toEntity(CidadeDTO cidadeDTO) {
-        return new Cidade(cidadeDTO.getId(), cidadeDTO.getNome(), cidadeDTO.getCep());
     }
 }
