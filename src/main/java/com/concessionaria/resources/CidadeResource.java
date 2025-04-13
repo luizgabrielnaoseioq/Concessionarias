@@ -3,42 +3,46 @@ package com.concessionaria.resources;
 import com.concessionaria.dtos.CidadeDTO;
 import com.concessionaria.services.CidadeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/cidade")
+@RequestMapping("/api/cidades")
 public class CidadeResource {
 
     @Autowired
     private CidadeService cidadeService;
 
-    @GetMapping("/")
-    public ResponseEntity<List<CidadeDTO>> findAll(CidadeDTO cidade) {
-        return ResponseEntity.ok(cidadeService.findAll());
+    @PostMapping
+    public ResponseEntity<CidadeDTO> criar(@RequestBody CidadeDTO dto) {
+        CidadeDTO nova = cidadeService.salvar(dto);
+        return new ResponseEntity<>(nova, HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CidadeDTO> findById(@PathVariable Long id) {
-        return ResponseEntity.ok(cidadeService.findById(id));
+    public ResponseEntity<CidadeDTO> buscarPorId(@PathVariable Long id) {
+        return ResponseEntity.ok(cidadeService.buscarPorId(id));
     }
 
-
-    @PostMapping("/")
-    public ResponseEntity<CidadeDTO> save(@RequestBody CidadeDTO cidadeDTO) {
-        return ResponseEntity.ok(cidadeService.save(cidadeDTO));
+    @GetMapping
+    public ResponseEntity<List<CidadeDTO>> buscarTodos(@RequestParam(required = false) String nome) {
+        if (nome != null) {
+            return ResponseEntity.ok(cidadeService.buscarPorNome(nome));
+        }
+        return ResponseEntity.ok(cidadeService.buscarTodos());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<List<CidadeDTO>> update(@PathVariable Long id, @RequestBody CidadeDTO cidadeDTO) {
-        return ResponseEntity.ok((List<CidadeDTO>) cidadeService.update(cidadeDTO));
+    public ResponseEntity<CidadeDTO> atualizar(@PathVariable Long id, @RequestBody CidadeDTO dto) {
+        return ResponseEntity.ok(cidadeService.atualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
-        cidadeService.deleteById(id);
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> deletar(@PathVariable Long id) {
+        cidadeService.deletar(id);
+        return ResponseEntity.noContent().build();
     }
 }
