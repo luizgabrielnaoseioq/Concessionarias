@@ -2,12 +2,15 @@ package com.concessionaria.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_concessionaria")
-@Data
 public class Concessionaria {
 
     @Id
@@ -26,4 +29,6 @@ public class Concessionaria {
 
     @OneToMany(mappedBy = "concessionaria")
     private List<Veiculo> veiculos;
+
+
 }

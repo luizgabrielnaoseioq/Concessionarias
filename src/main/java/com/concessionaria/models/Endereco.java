@@ -2,10 +2,13 @@ package com.concessionaria.models;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
+@Getter
+@Setter
 @Entity
 @Table(name = "tb_endereco")
-@Data
 public class Endereco {
 
     @Id
